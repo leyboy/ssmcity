@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ley.city.dao.CityDao">
+
+	<resultMap type="_city" id="cityMap">
+		<id column="ID" property="id" />
+		<result column="Name" property="name" />
+		<result column="CountryCode" property="countryCode" />
+		<result column="District" property="district" />
+		<result column="Population" property="population" />
+		<result column="ImagePath" property="imagePath" />
+		<result column="IsDelete" property="delete" />
+	</resultMap>
+
+	<insert id="insertCity" parameterType="_city">
+		insert into
+		city(Name,CountryCode,District,Population,ImagePath)
+		values(#{name},#{countryCode},#{district},#{population},#{imagePath})
+	</insert>
+
+	<update id="deleteCityById" parameterType="int">
+		update city set
+		IsDelete =
+		1 where ID = #{cityId}
+	</update>
+
+	<update id="updateCityById" parameterType="_city">
+		update city set Name =
+		#{name},CountryCode = #{countryCode},
+		District = #{district},Population
+		= #{population},
+		ImagePath = #{imagePath} where ID = #{id}
+	</update>
+
+	<select id="getCityById" parameterType="int" resultMap="cityMap">
+		select *
+		from city where IsDelete = 0 and ID = #{cityId}
+	</select>
+
+	<select id="listCitiesByConditionAndPage" parameterType="object"
+		resultMap="cityMap">
+		select * from city
+		<where>
+			<trim suffixOverrides="and">
+				IsDelete = 0 and
+				<if test="condition.name != null and condition.name != '' ">
+					<bind name="nameLike" value=" '%'+condition.name+'%'" />
+					Name like #{nameLike} and
+				</if>
+				<if test="condition.countryCode != null and condition.countryCode != '' ">
+					CountryCode = #{condition.countryCode} and
+				</if>
+				<if test="condition.population != null">
+					Population >= #{condition.population}
+				</if>
+			</trim>
+		</where>
+	</select>
+</mapper>
