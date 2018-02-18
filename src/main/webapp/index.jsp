@@ -12,7 +12,6 @@
 <body>
 	<h2>${ctx }</h2>
 	<h2><a href="${ctx}/city/selectCity.do?population=0">查询全部</a></h2>
-	<h2><a href="${ctx}/city/json1.do">查询全部Json</a></h2>
-		<h2><a href="${ctx}/city/json2.do">查询全部Json1</a></h2>
+	<h2><a href="${ctx}/city/cityJson.do">查询全部Json</a></h2>
 </body>
 </html>
